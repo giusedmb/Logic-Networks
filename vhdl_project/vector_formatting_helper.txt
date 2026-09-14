@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main() {
+    int num;
+    int first = 1; // Variabile per controllare la virgola
+
+    // Legge i numeri separati da un'andata a capo
+    while (scanf("%d", &num) == 1) {
+        // Se non è il primo numero, aggiungi la virgola
+        if (!first) {
+            printf(", ");
+        }
+        // Ristampa il numero
+        printf("%d", num);
+        first = 0; // Dopo il primo numero, non è più il primo
+    }
+
+    // Aggiungi un a capo finale
+    printf("\n");
+
+    return 0;
+}
