@@ -27,22 +27,31 @@ entity project_reti_logiche is
 end entity;
 ```
 
-All signals are synchronous to the clock, except for reset. The full specification, design choices and simulation results are described in [`project_report.pdf`](./project_report.pdf).
+All signals are synchronous to the clock, except for reset. The official assignment is described in [`specification/project_specification.pdf`](./specification/project_specification.pdf) and [`specification/submission_rules.pdf`](./specification/submission_rules.pdf); design choices and simulation results are described in [`project_report.pdf`](./project_report.pdf).
 
 ## Architecture
 
-The top-level component (`PROJECT`) instantiates and orchestrates the following modules:
+The top-level component (`project_reti_logiche`, in [`src/project.vhd`](./src/project.vhd)) instantiates and orchestrates the following modules:
 
 - **FSM** — operations director: manages the handshake with memory and enables the other components in the correct phases.
-- **SHIFT_REGISTER** — reads and stores the initial commands (sequence length, filter type, coefficients).
+- **SHIFT_REG** — reads and stores the initial commands (sequence length, filter type, coefficients).
 - **COUNTER** — keeps count of the processed elements.
-- **BUFFER** — holds the last 7 samples needed for the filter computation in a sliding-window register.
+- **buf** — holds the last 7 samples needed for the filter computation in a sliding-window register.
 - **DIFFERENTIAL_FILTER** — applies the linear combination of samples with the coefficients and normalizes the result.
 
 ## Repository structure
 
 ```
-vhdl_project/
+src/
+└── project.vhd                           → final, complete source code (all modules)
+
+specification/
+├── project_specification.pdf             → official project specification
+└── submission_rules.pdf                  → official submission rules
+
+project_report.pdf                        → final project report
+
+vhdl_project/                             → development history and auxiliary material
 ├── 0_.../1_.../2_.../4_.../5_.../6_...    → progressive development snapshots of the project
 │                                            (each with the .vhd sources for fsm, counter,
 │                                             differential_filter, shift_register, buffer and project)
@@ -55,11 +64,9 @@ vhdl_project/
 ├── project_specification_2024_25.xlsx    → project specification provided by the professor
 ├── fsm_state_diagram.pages               → FSM state diagram
 └── vector_formatting_helper.txt          → helper script for formatting test vectors
-
-project_report.pdf                        → final project report
 ```
 
-The numbered folders (`0` → `6`) are the development steps kept as historical reference: each step adds or fixes a feature (e.g. latch handling, saturation, avoiding memory overwrites, multiple starts, handling of maximum/minimum values). **The most complete and definitive version is `6`**, corresponding to the code described in the report.
+`src/project.vhd` is the actual submitted code — the definitive, graded deliverable. Everything under `vhdl_project/` is auxiliary: development snapshots, testbenches and reference material kept for context. The numbered folders (`0` → `6`) are the development steps kept as historical reference: each step adds or fixes a feature (e.g. latch handling, saturation, avoiding memory overwrites, multiple starts, handling of maximum/minimum values).
 
 ## Toolchain
 
